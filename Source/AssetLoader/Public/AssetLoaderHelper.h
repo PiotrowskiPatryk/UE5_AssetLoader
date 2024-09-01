@@ -1,7 +1,10 @@
 ﻿#pragma once
+
 #include "AssetLoader.h"
 #include "Engine/AssetManager.h"
 #include "Logging/StructuredLog.h"
+
+inline DEFINE_LOG_CATEGORY(LogAssetLoader);
 
 /**
  * Helper class for asynchronously loading assets using TSoftObjectPtr and TSoftClassPtr.
