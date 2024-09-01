@@ -1,0 +1,23 @@
+﻿{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "0.0.1",
+	"FriendlyName": "AssetLoader",
+	"Description": "This utility provides asynchronous asset loading functionality in Unreal Engine using `TSoftObjectPtr` and `TSoftClassPtr`.",
+	"Category": "Other",
+	"CreatedBy": "Patryk Piotrowski",
+	"CreatedByURL": "https://github.com/patryk191129",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"CanContainContent": true,
+	"IsBetaVersion": true,
+	"IsExperimentalVersion": true,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "AssetLoader",
+			"Type": "Runtime",
+			"LoadingPhase": "PreDefault"
+		}
+	]
+}
