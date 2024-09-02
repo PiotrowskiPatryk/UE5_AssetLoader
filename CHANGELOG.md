@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.2] - 2024-09-02
+
+### Changed
+
+- Updated repository url for version changes.
+- Updated `LOAD_SOFT_CLASS_POINTER_ASYNC` and `LOAD_SOFT_OBJECT_POINTER_ASYNC` macros to allow handling of null values directly in user-defined callback functions. This change provides more control over error handling when assets fail to load.
+
 ## [0.0.1] - 2024-09-01
 
 ### Added
@@ -17,5 +24,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Macros for simplifying the usage of the async loading functions.
 - Delegate-based callbacks for handling loaded assets.
 
-[unreleased]: https://github.com/patryk191129/UE5_AssetLoader/compare/v0.0.1...main
-[0.0.1]: https://github.com/patryk191129/UE5_AssetLoader/releases/tag/v0.0.1
+[unreleased]: https://github.com/PiotrowskiPatryk/UE5_AssetLoader/compare/v0.0.2...main
+[0.0.2]: https://github.com/PiotrowskiPatryk/UE5_AssetLoader/releases/tag/v0.0.2
+[0.0.1]: https://github.com/PiotrowskiPatryk/UE5_AssetLoader/releases/tag/v0.0.1
