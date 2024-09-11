@@ -60,6 +60,23 @@ TFuture<TObjectType*> FAssetLoaderHelper::LoadAsync(TSoftObjectPtr<TObjectType> 
 	TSharedPtr<TPromise<TObjectType*>> Promise = MakeShared<TPromise<TObjectType*>>();
 	TFuture<TObjectType*> Future = Promise->GetFuture();
 
+	// Check if the pointer itself is valid
+	if (SoftObjectPointer.ToSoftObjectPath().IsNull())
+	{
+		UE_LOGFMT(LogAssetLoader, Error, "Failed to load asset of type `{AssetType}`. Provided TSoftObjectPtr is referencing an invalid asset.",
+				  TObjectType::StaticClass()->GetName());
+		Promise->SetValue(nullptr);
+		return Future;
+	}
+
+	// Check if the asset is already loaded
+	if (const auto Value = SoftObjectPointer.Get(); Value != nullptr)
+	{
+		// Immediately call the delegate with the loaded asset
+		Promise->SetValue(Value);
+		return Future;
+	}
+
 	FStreamableManager& StreamableManager = UAssetManager::GetStreamableManager();
 
 	StreamableManager.RequestAsyncLoad(
@@ -67,7 +84,7 @@ TFuture<TObjectType*> FAssetLoaderHelper::LoadAsync(TSoftObjectPtr<TObjectType> 
 		FStreamableDelegate::CreateLambda(
 			[SoftObjectPointer, Promise]() mutable
 			{
-				if (TObjectType* LoadedObject = SoftObjectPointer.Get())
+				if (TObjectType* LoadedObject = SoftObjectPointer.Get(); LoadedObject != nullptr)
 				{
 					Promise->SetValue(LoadedObject);
 				}
@@ -87,6 +104,23 @@ TFuture<TSubclassOf<TObjectType>> FAssetLoaderHelper::LoadAsync(TSoftClassPtr<TO
 {
 	TSharedPtr<TPromise<TSubclassOf<TObjectType>>> Promise = MakeShared<TPromise<TSubclassOf<TObjectType>>>();
 	TFuture<TSubclassOf<TObjectType>> Future = Promise->GetFuture();
+
+	// Check if the pointer itself is valid
+	if (SoftClassPointer.ToSoftObjectPath().IsNull())
+	{
+		UE_LOGFMT(LogAssetLoader, Error, "Failed to load asset of type `{AssetType}`. Provided TSoftObjectPtr is referencing an invalid asset.",
+				  TObjectType::StaticClass()->GetName());
+		Promise->SetValue(nullptr);
+		return Future;
+	}
+
+	// Check if the asset is already loaded
+	if (const auto Value = SoftClassPointer.Get(); Value != nullptr)
+	{
+		// Immediately call the delegate with the loaded asset
+		Promise->SetValue(Value);
+		return Future;
+	}
 
 	FStreamableManager& StreamableManager = UAssetManager::GetStreamableManager();
 
@@ -114,6 +148,23 @@ template <typename TObjectType>
 void FAssetLoaderHelper::LoadAsync(TSoftObjectPtr<TObjectType> SoftObjectPointer,
                                    TFunction<void(TObjectType*)> LoadedDelegate)
 {
+	// Check if the pointer itself is valid
+	if (SoftObjectPointer.ToSoftObjectPath().IsNull())
+	{
+		UE_LOGFMT(LogAssetLoader, Error, "Failed to load asset of type `{AssetType}`. Provided TSoftObjectPtr is referencing an invalid asset.",
+		          TObjectType::StaticClass()->GetName());
+		LoadedDelegate(nullptr);
+		return;
+	}
+
+	// Check if the asset is already loaded
+	if (const auto Value = SoftObjectPointer.Get(); Value != nullptr)
+	{
+		// Immediately call the delegate with the loaded asset
+		LoadedDelegate(Value);
+		return;
+	}
+
 	FStreamableManager& StreamableManager = UAssetManager::GetStreamableManager();
 
 	StreamableManager.RequestAsyncLoad(
@@ -121,7 +172,7 @@ void FAssetLoaderHelper::LoadAsync(TSoftObjectPtr<TObjectType> SoftObjectPointer
 		FStreamableDelegate::CreateLambda(
 			[SoftObjectPointer, LoadedDelegate]() mutable
 			{
-				if (TSubclassOf<TObjectType> LoadedObject = SoftObjectPointer.Get())
+				if (TObjectType* LoadedObject = SoftObjectPointer.Get(); LoadedObject != nullptr)
 				{
 					LoadedDelegate(LoadedObject);
 				}
@@ -139,6 +190,23 @@ template <typename TObjectType>
 void FAssetLoaderHelper::LoadAsync(TSoftClassPtr<TObjectType> SoftClassPointer,
                                    TFunction<void(TSubclassOf<TObjectType>)> LoadedDelegate)
 {
+	// Check if the pointer itself is valid
+	if (SoftClassPointer.ToSoftObjectPath().IsNull())
+	{
+		UE_LOGFMT(LogAssetLoader, Error, "Failed to load asset of type `{AssetType}`. Provided TSoftObjectPtr is referencing an invalid asset.",
+				  TObjectType::StaticClass()->GetName());
+		LoadedDelegate(nullptr);
+		return;
+	}
+
+	// Check if the asset is already loaded
+	if (const auto Value = SoftClassPointer.Get(); Value != nullptr)
+	{
+		// Immediately call the delegate with the loaded asset
+		LoadedDelegate(Value);
+		return;
+	}
+
 	FStreamableManager& StreamableManager = UAssetManager::GetStreamableManager();
 
 	StreamableManager.RequestAsyncLoad(
